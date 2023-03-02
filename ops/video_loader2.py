@@ -168,10 +168,10 @@ class VideoLoader(data.Dataset):
         elif index not in self.cache_loaded[2]:
             self.loaded_frames, self.cache_loaded = search_cache(index, self.cache_list)
         elif index in self.cache_loaded[2]:
-            print(f"Using cache")
+            pass
         else:
             raise Exception("Not implemented")
-
+        
         frames_idxs = self.indices_list[index]
         cache_idxs  = self.cache_loaded[1]
         min_index   = int(np.where(cache_idxs == frames_idxs.min())[0])

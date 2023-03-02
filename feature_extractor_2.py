@@ -63,7 +63,6 @@ def parse_shift_option_from_log_name(log_name):
 
 def eval_video(data, net, test_segments_list, modality):
     net.eval()
-    start_time = time.time()
 
     with torch.no_grad():
         batch_size = 8
@@ -86,7 +85,6 @@ def eval_video(data, net, test_segments_list, modality):
         data_in = data.view(-1, length, data.size(2), data.size(3))
         if is_shift:
             data_in = data_in.view(1, test_segments_list, length, data_in.size(2), data_in.size(3))
-        ipdb.set_trace()
         feat = net(data_in)
         return feat
 
@@ -191,4 +189,4 @@ for vid_no, video_name in enumerate(videos_list):
                 feat_arr = np.concatenate((feat_arr, feat), axis=0)
 
     this_rst_list.append(feat_arr)
-    ipdb.set_trace()
+    #ipdb.set_trace()
