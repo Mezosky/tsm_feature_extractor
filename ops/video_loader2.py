@@ -86,7 +86,7 @@ class VideoLoader(data.Dataset):
         self.indices_list = self._get_all_indices_list(len(vr), self.n_frame, self.num_segments)
         self.cache_list   = self._cache_batch(self.indices_list)
         print(f'video length: {len(self.indices_list)}')
-
+        
 
     def _get_test_indices(self, start_frame, end_frame, new_length, num_segments):
         tick = (end_frame - new_length + 1) / float(num_segments)
@@ -112,6 +112,9 @@ class VideoLoader(data.Dataset):
                 else:
                     idx_list.append(sampled_frames)
         
+        if idx_list[-1][-1] == total_frames:
+            idx_list[-1][-1] = idx_list[-1][-1] - 1
+            
         return idx_list
 
     def _cache_batch(self, frames_list):
@@ -157,7 +160,7 @@ class VideoLoader(data.Dataset):
                     video_path = os.path.join(self.video_path, self.video_name)
                     vr         = VideoReader(video_path, ctx=cpu(0))
                     return vr.get_batch(cache[1]), cache
-        
+                
         if index > len(self.indices_list):
             raise Exception("Index entered exceeds video length")
             
