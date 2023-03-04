@@ -1,4 +1,7 @@
-# TSM: Temporal Shift Module for Efficient Video Understanding [[Website]](https://hanlab.mit.edu/projects/tsm/) [[arXiv]](https://arxiv.org/abs/1811.08383)[[Demo]](https://www.youtube.com/watch?v=0T6u7S_gq-4)
+# Feature extractor for TSN and TSM: 
+
+## Original Papers
+- Temporal Shift Module for Efficient Video Understanding [[Website]](https://hanlab.mit.edu/projects/tsm/) [[arXiv]](https://arxiv.org/abs/1811.08383)[[Demo]](https://www.youtube.com/watch?v=0T6u7S_gq-4)
 
 ## How to run
 
