@@ -107,7 +107,7 @@ else:
 
 root_path = args.root_path
 output_path = args.output_path
-this_arch = weights_list[0].split('TSM_')[1].split('_')[2]
+this_arch = weights_list[0].split('_')[3]
 
 num_class, _, _, _, _ = dataset_config.return_dataset(args.dataset, modality)
 print('=> shift: {}, shift_div: {}, shift_place: {}'.format(is_shift, shift_div, shift_place))
@@ -125,7 +125,11 @@ if 'tpool' in weights_list[0]:
     make_temporal_pool(net.base_model, test_segments_list)  # since DataParallel
 
 checkpoint = torch.load(weights_list[0])
-checkpoint = checkpoint['state_dict']
+try:
+    checkpoint = checkpoint['state_dict']
+except Exception as e:
+    print(f"[ERROR]: {e}")
+    print(f"Loading checkpoint without key 'state_dict'")
 
 base_dict = {'.'.join(k.split('.')[1:]): v for k, v in list(checkpoint.items())}
 replace_dict = {'base_model.classifier.weight': 'new_fc.weight',
