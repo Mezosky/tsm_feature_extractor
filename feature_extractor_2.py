@@ -163,7 +163,7 @@ videos_list   = os.listdir(root_path)
 videos_loaded = [i.split(".")[0] for i in os.listdir(output_path)]
 videos_list   = [i for i in videos_list if i.split(".")[0] not in videos_loaded]
 if len(videos_loaded) > 0:
-    print(f"[DATA] {len(videos_list)} processed videos have been found.")
+    print(f"[DATA] {len(videos_loaded)} processed videos have been found.")
 print(f"[DATA] {len(videos_list)} videos will be processed...")
 
 for vid_no, video_name in enumerate(videos_list):
