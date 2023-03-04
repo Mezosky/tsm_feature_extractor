@@ -157,8 +157,6 @@ class VideoLoader(data.Dataset):
                     video_path = os.path.join(self.video_path, self.video_name)
                     vr         = VideoReader(video_path, ctx=cpu(0))
                     return vr.get_batch(cache[1]), cache
-                else:
-                    print("Out of range")
         
         if index > len(self.indices_list):
             raise Exception("Index entered exceeds video length")

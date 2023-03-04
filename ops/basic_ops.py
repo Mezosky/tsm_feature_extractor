@@ -15,6 +15,7 @@ class SegmentConsensus(torch.nn.Module):
         self.shape = None
 
     def forward(self, input_tensor):
+        
         self.shape = input_tensor.size()
         if self.consensus_type == 'avg':
             output = input_tensor.mean(dim=self.dim, keepdim=True)
@@ -22,7 +23,6 @@ class SegmentConsensus(torch.nn.Module):
             output = input_tensor
         else:
             output = None
-
         return output
 
 

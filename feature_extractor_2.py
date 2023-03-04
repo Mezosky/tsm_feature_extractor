@@ -40,6 +40,7 @@ parser.add_argument('-j', '--workers', default=0, type=int, metavar='N',
 # for true test
 parser.add_argument('--root_path', type=str, default=None)
 parser.add_argument('--num_frames', type=int, default=16)
+parser.add_argument('--output_path', type=str, default=None)
 
 parser.add_argument('--max_num', type=int, default=-1)
 parser.add_argument('--input_size', type=int, default=224)
@@ -105,6 +106,7 @@ else:
     modality = 'Flow'
 
 root_path = args.root_path
+output_path = args.output_path
 this_arch = weights_list[0].split('TSM_')[1].split('_')[2]
 
 num_class, _, _, _, _ = dataset_config.return_dataset(args.dataset, modality)
@@ -157,7 +159,13 @@ else:
     raise ValueError("Only 1, 5, 10 crops are supported while we got {}".format(args.test_crops))
 
 this_rst_list = []
-videos_list   = os.listdir(root_path) 
+videos_list   = os.listdir(root_path)
+videos_loaded = [i.split(".")[0] for i in os.listdir(output_path)]
+videos_list   = [i for i in videos_list if i.split(".")[0] not in videos_loaded]
+if len(videos_loaded) > 0:
+    print(f"[DATA] {len(videos_list)} processed videos have been found.")
+print(f"[DATA] {len(videos_list)} videos will be processed...")
+
 for vid_no, video_name in enumerate(videos_list):
     print(f"{vid_no + 1}.- Processing {video_name}...")
     data_loader = torch.utils.data.DataLoader(
@@ -184,9 +192,10 @@ for vid_no, video_name in enumerate(videos_list):
         with torch.no_grad():
             feat = eval_video(video, net, test_segments_list[0], modality)
             if feat_arr is None:
-                feat_arr = feat
+                feat_arr = feat[0]
             else:
-                feat_arr = np.concatenate((feat_arr, feat), axis=0)
-
+                feat_arr = np.vstack((feat_arr, feat[0]))
+    
+    feat_name = video_name.split(".")[0]
+    np.save(f"{output_path}/{feat_name}.npy", feat_arr)
     this_rst_list.append(feat_arr)
-    #ipdb.set_trace()

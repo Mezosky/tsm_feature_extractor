@@ -272,12 +272,10 @@ class TSN(nn.Module):
 
             base_out = self.base_model(input.view((-1, sample_len) + input.size()[-2:]))
         else:
-            print("entra en el else")
             base_out = self.base_model(input)
         
-        features_out = base_out.detach().clone()
-        print(time.time() - start_time)
-
+        features_out = base_out.detach().clone().mean(axis=0)
+        
         if self.dropout > 0:
             base_out = self.new_fc(base_out)
 
@@ -290,7 +288,6 @@ class TSN(nn.Module):
             else:
                 base_out = base_out.view((-1, self.num_segments) + base_out.size()[1:])
             output = self.consensus(base_out)
-            print(time.time() - start_time)
             return features_out, output.squeeze(1)
 
     def _get_diff(self, input, keep_rgb=False):
