@@ -132,3 +132,4 @@ dmypy.json
 .pretrained/
 pretrained/
 .notebooks/
+.scripts/
